@@ -27,11 +27,13 @@ let questions=[
 		new QA("shreak when", ["tmoorrow", "hour"], 1)
 ];
 shuffle(questions);
+let totalQuestions=10;
 let currQuestion=0;
 let questionAns=-1;
 let questionAnsTime=0;
 let numRight=0;
 let numWrong=0;
+let prevBest=0;
 function listenAnswerSelect(e){
 	if(questionAns==-1){
 		const numAnswers=questions[currQuestion].answerChoices.length;
@@ -55,9 +57,28 @@ function listenAnswerSelect(e){
 			}
 		}
 	}
-	console.log(questionAns);
+}
+function listenForRestart(e){
+	const x=e.clientX-boundingRect.left;
+	const y=e.clientY-boundingRect.top;
+	if(x>=canvas.width/4 && y>=canvas.height/4 && x<=canvas.width*0.75 && y<=canvas.height*0.75){
+		canvas.removeEventListener('mousedown', listenForRestart);
+		restart();
+	}
 }
 canvas.addEventListener('mousedown', listenAnswerSelect);
+function restart(){
+	shuffle(questions);
+	currQuestion=0;
+	questionAns=-1;
+	if(prevBest<numRight/(numRight+numWrong)){
+		prevBest=numRight/(numRight+numWrong);
+	}
+	numRight=0;
+	numWrong=0;
+	questionAnsTime=0;
+	canvas.addEventListener('mousedown', listenAnswerSelect);
+}
 window.requestAnimationFrame(draw);
 function draw(){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -80,9 +101,26 @@ function draw(){
 	}
 	const textWidth=ctx.measureText(questions[currQuestion].question).width;
 	ctx.fillText(questions[currQuestion].question, canvas.width/2-textWidth/2, 35);
-	if(questionAns!=-1 && Date.now()-questionAnsTime>=3000 && currQuestion<10){
+	if(questionAns!=-1 && Date.now()-questionAnsTime>=2000 && currQuestion<totalQuestions-1){
 		questionAns=-1;
 		currQuestion++;
+		questionAnsTime=0;
+		console.log(currQuestion);
+	}
+	if(currQuestion>=totalQuestions-1 && questionAnsTime!=0 && Date.now()-questionAnsTime>=2000){
+		canvas.addEventListener('mousedown', listenForRestart);
+		canvas.removeEventListener('mousedown', listenAnswerSelect);
+		ctx.fillStyle='#8ff0ff';
+		ctx.fillRect(canvas.width/4, canvas.height/4, canvas.width/2, canvas.height/2);
+		ctx.strokeRect(canvas.width/4, canvas.height/4, canvas.width/2, canvas.height/2);
+		const textWidth1=ctx.measureText("Click to Restart").width;
+		const textWidth2=ctx.measureText("Percent Correct: "+numRight/(numRight+numWrong)*100+"%").width;
+		const textWidth3=ctx.measureText("Previous Best: "+prevBest*100+"%").width;
+		const textHeight=ctx.measureText("M").width;
+		ctx.fillStyle='black';
+		ctx.fillText("Click to Restart", canvas.width/2-textWidth1/2, canvas.height/2-textHeight*2);
+		ctx.fillText("Percent Correct: "+numRight/(numRight+numWrong)*100+"%", canvas.width/2-textWidth2/2, canvas.height/2-textHeight/2);
+		ctx.fillText("Previous Best: "+prevBest*100+"%", canvas.width/2-textWidth3/2, canvas.height/2+textHeight);
 	}
  	window.requestAnimationFrame(draw);
 }
