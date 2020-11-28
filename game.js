@@ -13,18 +13,26 @@ canvas.width=window.innerWidth-50;
 canvas.height=window.innerHeight-50;
 const answersHeight=canvas.height/3;
 let questions=[
-		new QA("Hamburger or donut", ["Hamburger", "Donut"], 0), 
-		new QA("Heefs?", ["yas", "yes."], 0), 
-		new QA("Best way to kerdobnk", ["tastr", "kerdombetk"], 1), 
-		new QA("mariah carey", ["all i want for christmas", "nooooooo"], 1), 
-		new QA("turkey day", ["halloween", "christmas"], 1), 
-		new QA("christ mas", ["yes", "no"], 1), 
-		new QA("send help when", ["soon", "later"], 0), 
-		new QA("take my hat", ["no thank", "gibus"], 1), 
-		new QA("grammer communist", ["test", "dddd"], 1), 
-		new QA("filler quastionm", ["yes", "efowhied"], 1), 
-		new QA("im stuck in a question making factory", ["what?", "what?"], 0), 
-		new QA("shreak when", ["tmoorrow", "hour"], 1)
+		new QA("What year did the Civil War start?", ["1861", "1838", "1775", "1793"], 0), 
+		new QA("What year did the Civil War end?", ["1821", "1783", "1865", "1848"], 2), 
+		new QA("In which state did the Civil War start?", ["Virginia", "North Carolina", "Philadelphia", "South Carolina"], 3), 
+		new QA("What was the first battle of the Civil War?", ["Battle of Gettysburg", "First Battle of Bull Run", "Battle of Shiloh", "Battle of Antietam"], 1), 
+		new QA("Who was the president of the Confederacy?", ["Jefferson Davis", "Abraham Lincoln", "Ulysses Grant", "Robert Lee"], 0), 
+		new QA("Who was the president of the Union?", ["Jefferson Davis", "Abraham Lincoln", "Ulysses Grant", "Robert Lee"], 1), 
+		new QA("How large was the Confederate army?", ["10 million", "5 million", "1 million", "500 thousand"], 2), 
+		new QA("How large was the Union army?", ["10 million", "200 thousand", "4 million", "2 million"], 3), 
+		new QA("How many years did the Civil War last?", ["4 years", "1 year", "10 years", "3 years"], 0), 
+		new QA("What was the cause of the Civil War?", ["Resources", "Slavery", "Trade", "Money"], 1), 
+		new QA("Where did the Civil War end?", ["South Carolina", "Pennsylvania", "Georgia", "Virginia"], 3), 
+		new QA("Who was the Confederate army's commander at the end of the war?", ["Jefferson Davis", "Ulysses Grant", "Robert Lee", "Abraham Lincoln"], 2), 
+		new QA("Who was the Union army's commander at the end of the war?", ["Abraham Lincoln", "Ulysses Grant", "Robert Lee", "Jefferson Davis"], 1), 
+		new QA("When was the Gettysburg Address given?", ["April 12, 1861", "May 9, 1865", "April 19, 1775", "November 19, 1863"], 3), 
+		new QA("What was the battle with the most casualties?", ["Battle of Shiloh", "Battle of Antietam", "Battle of Gettysburg", "Battle of Chickamauga"], 2), 
+		new QA("Which general forced the Confederate army's commander to surrender?", ["Ulysses Grant", "Robert Lee", "Abraham Lincoln", "Jefferson Davis"], 0), 
+		new QA("During the Civil War, who ran against Abraham Lincoln in his reelection?", ["Abraham Lincoln", "Andrew Johnson", "George McClellan", "George Washington"], 2), 
+		new QA("How many major Civil War battles were in Texas?", ["3", "0", "2", "5"], 1), 
+		new QA("How many major battles were in the Civil War?", ["378", "13", "22", "50"], 3), 
+		new QA("How many Texans served in the Civil War?", ["90,000", "75,000", "225,000", "10,000"], 0)
 ];
 shuffle(questions);
 let totalQuestions=10;
@@ -40,7 +48,7 @@ function listenAnswerSelect(e){
 		const sectionSize=canvas.width/numAnswers;
 		const x=e.clientX-boundingRect.left;
 		const y=e.clientY-boundingRect.top;
-		if(y>=0 && y<=answersHeight){
+		if(y>=50 && y<=answersHeight+50){
 			for(let i=0; i<numAnswers; i++){
 				if(x>=i*sectionSize && x<(i+1)*sectionSize){
 					questionAns=i;
